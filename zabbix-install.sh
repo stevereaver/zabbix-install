@@ -24,6 +24,11 @@ FQDN=`host $HOSTNAME |cut -d' ' -f1`
 
 groupadd -g 130 zabbix
 useradd -u 130 -g 130 -c "Zabbix User" -s "/usr/bin/ksh" -m zabbix
+cp zabbix.xml.dist /lib/svc/manifest/site
+mkdir /etc/zabbix
+sed -e 's/<HOSTNAME>/$FQDN/g' zabbix_agentd.dist
+cp zabbix_agentd.conf.dist /etc/zabbix/zabbix_agent.conf 
+chown -R zabbix:zabbix /etc/zabbix
 mkdir /opt/zabbix
 cd /opt/zabbix
 wget https://www.zabbix.com/downloads/2.2.14/zabbix_agents_2.2.14.solaris10.sparc.tar.gz
@@ -32,10 +37,5 @@ mkdir /opt/zabbix/log
 chown -R zabbix:zabbix /opt/zabbix
 rm -rf /opt/zabbix/conf
 rm /opt/zabbix/zabbix_agents_2.2.14.solaris10.sparc.tar.gz
-mkdir /etc/zabbix
-sed -e 's/<HOSTNAME>/$FQDN/g' zabbix_agentd.dist
-cp zabbix_agentd.conf.dist /etc/zabbix/zabbix_agent.conf 
-chown -R zabbix:zabbix /etc/zabbix
-cp zabbix.xml.dist /lib/svc/manifest/site
 svcadm restart svc:/system/manifest-import:default 
 svcs -a |grep zabbix
