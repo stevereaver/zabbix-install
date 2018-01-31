@@ -18,8 +18,13 @@ fi
 # We can't really delete an SMF on Solaris, so we will just disable it.
 svcadm disable zabbix_agent
 
-rm -rf /etc/zabbix
-rm -rf /opt/zabbix
+if [ -d "/etc/zabbix" ]; then
+  rm -rf /etc/zabbix
+fi
+
+if [ -d "/opt/zabbix" ]; then
+  rm -rf /opt/zabbix
+fi
 
 groupdel zabbix
 userdel zabbix
