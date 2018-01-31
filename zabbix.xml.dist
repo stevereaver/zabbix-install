@@ -1,0 +1,25 @@
+<?xml version='1.0'?>
+<!DOCTYPE service_bundle SYSTEM '/usr/share/lib/xml/dtd/service_bundle.dtd.1'>
+<service_bundle type='manifest' name='export'>
+ <service name='application/zabbix-agent' type='service' version='0'>
+ <create_default_instance enabled='true'/>
+ <single_instance/>
+ <dependency name='fs-local' grouping='require_all' restart_on='none' type='service'>
+ <service_fmri value='svc:/system/filesystem/local'/>
+ </dependency>
+ <exec_method name='start' type='method' exec='/opt/zabbix/sbin/zabbix_agentd -c /etc/zabbix/zabbix_agentd.conf' timeout_seconds='60'>
+ <method_context>
+ <method_credential user='zabbix' privileges='basic'/>
+ </method_context>
+ </exec_method>
+ <exec_method name='stop' type='method' exec=':kill' timeout_seconds='60'>
+ <method_context/>
+ </exec_method>
+ <stability value='Unstable'/>
+ <template>
+ <common_name>
+ <loctext xml:lang='C'>Zabbix Agent</loctext>
+ </common_name>
+ </template>
+ </service>
+</service_bundle>
