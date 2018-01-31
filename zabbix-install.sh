@@ -29,12 +29,11 @@ cd /opt/zabbix
 wget https://www.zabbix.com/downloads/2.2.14/zabbix_agents_2.2.14.solaris10.sparc.tar.gz
 tar -xvf zabbix_agents_2.2.14.solaris10.sparc.tar.gz
 mkdir /opt/zabbix/log
-cd /opt
-chown -R zabbix:zabbix zabbix
+chown -R zabbix:zabbix /opt/zabbix
 rm -rf /opt/zabbix/conf
 rm /opt/zabbix/zabbix_agents_2.2.14.solaris10.sparc.tar.gz
 mkdir /etc/zabbix
-sed -i -e 's/<HOSTNAME>/$FQDN/g' zabbix_agentd.dist
+sed -e 's/<HOSTNAME>/$FQDN/g' zabbix_agentd.dist
 cp zabbix_agentd.conf.dist /etc/zabbix/zabbix_agent.conf 
 chown -R zabbix:zabbix /etc/zabbix
 cp zabbix.xml.dist /lib/svc/manifest/site
